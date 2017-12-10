@@ -13,17 +13,20 @@ const haus = "#f3f4f4"
 
 injectGlobal`
 :root {
+  --night: #333;
+  --haus: #f3f4f4;
+  --peach: #efada0;
+  --peachDark: #e37059;
+  --surDark: #24828f;
   font-size: 20px;
 }
 
 body {
-  background: linear-gradient(-60deg, ${peachDark}, ${surDark});
-  background-attachment: fixed;
   display: grid;
   width: 100vw;
   height: 100vh;
   padding: 2rem;
-  color: ${haus};
+  color: var(--peachDark);
 }
 
 * {
@@ -34,8 +37,8 @@ body {
 input {
   background: transparent;
   border: none;
-  color: ${haus};
-  border-bottom: 1px solid ${haus};
+  color: var(--night);
+  border-bottom: 1px solid ${night};
   font-size: 1rem;
   &:focus {
     outline: none;

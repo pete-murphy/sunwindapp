@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 
-import ClientInputs from "./components/ClientInputs"
+import ClientForm from "./components/ClientForm"
 
 class App extends Component {
   constructor() {
@@ -58,7 +58,7 @@ class App extends Component {
   }
 
   render() {
-    return <ClientInputs {...this.state.client} />
+    return <ClientForm {...this.state.client} />
   }
 }
 
