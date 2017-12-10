@@ -19,6 +19,15 @@ class App extends Component {
         },
         usageData: Array(12).fill(0),
         sRECMarketSector: 1,
+        isCommercial: true,
+        incentivePrograms: {
+          fITC: true,
+          sMART: false,
+          sREC: true,
+          mACRS: true,
+          nantucketSolar: false,
+          netMetering: true
+        },
         taxRate: 0.35
       },
       system: {
@@ -40,15 +49,6 @@ class App extends Component {
           // This is data from Boston TMY2
           lat: 41.68,
           lon: -69.96
-        },
-        isCommercial: true,
-        incentivePrograms: {
-          fITC: true,
-          sMART: false,
-          sREC: true,
-          mACRS: true,
-          nantucketSolar: false,
-          netMetering: true
         },
         hasError: true,
         hasSubmitted: false,

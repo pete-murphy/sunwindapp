@@ -1,12 +1,38 @@
 import React, { Component, Fragment } from "react"
 import PropTypes from "prop-types"
+import styled from "styled-components"
+
+const Form = styled.form`
+  color: inherit;
+`
+
+const Fieldset = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8ch, 1fr));
+  grid-gap: 20px;
+  padding: 1rem;
+  border: 1px solid white;
+  border-radius: 3px;
+  margin: 0.5rem;
+`
+
+const InputGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0.5rem;
+  grid-column: span ${props => (props.span ? props.span : "1")};
+  & label {
+    font-size: 0.75rem;
+  }
+`
 
 export default class ClientInfo extends Component {
   static propTypes = {
     name: PropTypes.shape({
       first: PropTypes.string.isRequired,
       last: PropTypes.string.isRequired
-    }).isRequired,
+    }).isRequired, // Is this "isRequired" redundant if inner properties are required?
     address: PropTypes.shape({
       number: PropTypes.string.isRequired,
       street: PropTypes.string.isRequired,
@@ -24,48 +50,31 @@ export default class ClientInfo extends Component {
 
   render() {
     return (
-      <Fragment>
-        <h1>Customer info</h1>
-        <form>
-          {Object.keys(this.props).map(
-            prop =>
-              typeof this.props[prop] === "object" ? (
-                <Fragment>
-                  <h2>{prop}</h2>
-                  {Object.keys(this.props[prop]).map(subProp => (
-                    <Fragment>
-                      <label htmlFor={subProp}>{subProp}</label>
-                      <input type="text" value={this.props[prop][subProp]} />
-                    </Fragment>
-                  ))}
-                </Fragment>
-              ) : (
-                <Fragment>
-                  <label htmlFor={prop}>{prop}</label>
-                  <input type="text" value={this.props[prop]} />
-                </Fragment>
-              )
-          )}
-        </form>
-
+      <Form>
+        <h2>Customer info</h2>
         {Object.keys(this.props).map(
           prop =>
             typeof this.props[prop] === "object" ? (
-              <Fragment key={prop}>
-                <div>{prop} is an object and these are its properties:</div>
+              <Fieldset>
+                <legend>{prop}</legend>
                 {Object.keys(this.props[prop]).map(subProp => (
-                  <div>
-                    {prop}[{subProp}] is type {typeof this.props[prop][subProp]}
-                  </div>
+                  <InputGroup>
+                    <label htmlFor={subProp}>{subProp}</label>
+                    <input type="text" value={this.props[prop][subProp]} />
+                  </InputGroup>
                 ))}
-              </Fragment>
+              </Fieldset>
             ) : (
-              <div>
-                {prop} is type {typeof this.props[prop]}
-              </div>
+              <Fieldset>
+                <legend>{prop}</legend>
+                <InputGroup>
+                  <label htmlFor={prop}>{prop}</label>
+                  <input type="text" value={this.props[prop]} />
+                </InputGroup>
+              </Fieldset>
             )
         )}
-      </Fragment>
+      </Form>
     )
   }
 }
