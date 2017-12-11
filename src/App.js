@@ -1,7 +1,28 @@
 import React, { Component } from "react"
 import { BrowserRouter as Router, Route, Link } from "react-router-dom"
+import styled from "styled-components"
 
 import ClientForm from "./components/ClientForm"
+import SystemForm from "./components/SystemForm"
+
+const Container = styled.div`
+  display: grid;
+  grid-template-columns: 4fr 1fr;
+  width: 100vw;
+  height: 100vh;
+  & > * {
+    padding: 1rem;
+    overflow: scroll;
+  }
+`
+export const Main = styled.div`
+  grid-column: 1 / 2;
+`
+
+export const Sidebar = styled.div`
+  grid-column: 2 / 3;
+  background-color: var(--night);
+`
 
 class App extends Component {
   constructor() {
@@ -52,7 +73,7 @@ class App extends Component {
         ],
         defaultSettings: {
           moduleType: 1,
-          // This is data from Boston TMY2
+          // Fetch data from Boston TMY2
           lat: 41.68,
           lon: -69.96
         },
@@ -85,17 +106,35 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <Route
-          path="/client"
-          exact
-          render={() => (
-            <ClientForm
-              {...this.state.client}
-              handleChange={this.handleClientChange}
-              handleToggle={this.handleClientToggle}
+        <Container>
+          <Main>
+            <Route
+              path="/client"
+              exact
+              render={() => (
+                <ClientForm
+                  {...this.state.client}
+                  handleChange={this.handleClientChange}
+                  handleToggle={this.handleClientToggle}
+                />
+              )}
             />
-          )}
-        />
+            <Route
+              path="/system"
+              exact
+              render={() => (
+                <SystemForm
+                  {...this.state.client}
+                  handleChange={this.handleClientChange}
+                  handleToggle={this.handleClientToggle}
+                />
+              )}
+            />
+          </Main>
+          <Sidebar>
+            <h2>Sidebar</h2>
+          </Sidebar>
+        </Container>
       </Router>
     )
   }

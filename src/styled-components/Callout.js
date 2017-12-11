@@ -2,7 +2,7 @@ import React from "react"
 import styled from "styled-components"
 
 const Callout = styled.div`
-  background-color: #e37059;
+  background-color: var(--peach);
   position: relative;
   padding: 10px;
   border-radius: 3px;
@@ -16,6 +16,6 @@ const Callout = styled.div`
     position: absolute;
     left: 45%;
     bottom: -20px;
-    border-top: 10px solid #e37059;
+    border-top: 10px solid var(--peach);
   }
 `

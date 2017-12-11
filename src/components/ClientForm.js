@@ -2,6 +2,8 @@ import React, { Component, Fragment } from "react"
 import PropTypes from "prop-types"
 import styled from "styled-components"
 
+import { camelToTitle } from "../functions/library"
+
 const Form = styled.form`
   color: inherit;
 `
@@ -109,20 +111,20 @@ export default class ClientForm extends Component {
   render() {
     return (
       <Form>
-        <h2>Customer info</h2>
+        <h1>Customer Info</h1>
         {Object.keys(this.props).map(
           category =>
             typeof this.props[category] !== "function" && (
               <Fragment key={category}>
                 <Legend>
-                  <h2>{category}</h2>
+                  <h2>{camelToTitle(category)}</h2>
                 </Legend>
                 <Fieldset>
                   {Object.keys(this.props[category]).map(
                     name =>
                       typeof this.props[category][name] !== "boolean" ? (
                         <InputGroup key={name}>
-                          <label htmlFor={name}>{name}</label>
+                          <label htmlFor={name}>{camelToTitle(name)}</label>
                           <Input
                             type="text"
                             data-category={category}

@@ -15,25 +15,17 @@ injectGlobal`
   font-size: 20px;
 }
 
-input[type="checkbox"] {
-  display: inline-block;
-  &:checked {
-    background: var(--peach);
+body {
+  color: var(--peachDark);
+  margin: 0;
+  padding: 0;
+  background: var(--haus);
+  & * {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    box-sizing: border-box;
   }
 }
 
-body {
-  display: grid;
-  width: 100vw;
-  height: 100vh;
-  padding: 2rem;
-  color: var(--peachDark);
-}
-
-* {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  box-sizing: border-box;
-}
 
 input {
   background: transparent;
@@ -43,6 +35,12 @@ input {
   font-size: 1rem;
   &:focus {
     outline: none;
+  }
+}
+
+input[type="checkbox"] {
+  &:checked {
+    background: var(--peach);
   }
 }
 `
