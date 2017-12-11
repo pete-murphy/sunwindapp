@@ -71,12 +71,9 @@ class App extends Component {
 
   handleClientToggle(name, category) {
     console.log("Then: ", JSON.stringify(this.state.client, null, 2))
-    this.setState(
-      ({ client }) =>
-        category
-          ? (client[category][name] = !client[category][name])
-          : (client[name] = !client[name])
-    )
+    const client = { ...this.state.client }
+    client[category][name] = !client[category][name]
+    this.setState(({ client }) => client)
   }
 
   componentDidUpdate() {
