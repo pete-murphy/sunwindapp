@@ -8,11 +8,9 @@ const Form = styled.form`
 
 const Fieldset = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(8ch, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(12ch, 1fr));
   grid-gap: 20px;
   padding: 1rem;
-  border: 1px solid white;
-  border-radius: 3px;
   margin: 0.5rem;
 `
 
@@ -33,8 +31,8 @@ const Legend = styled.div`
 
 const InputGroup = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
+  flex-direction: ${props => (props.row ? "row" : "column")};
+  justify-content: ${props => (props.row ? "flex-start" : "flex-end")};
   padding: 0.5rem;
   grid-column: span ${props => (props.span ? props.span : "1")};
   & label {
@@ -42,7 +40,22 @@ const InputGroup = styled.div`
   }
 `
 
+const Input = styled.input``
+
+const Checkbox = styled.input`
+  font-size: 0.75rem;
+  width: 100%;
+  background-color: ${props => (props.on ? "var(--peach)" : "transparent")};
+`
+
 export default class ClientForm extends Component {
+  constructor() {
+    super()
+
+    this.handleChange = this.handleChange.bind(this)
+    this.handleToggle = this.handleToggle.bind(this)
+  }
+
   static propTypes = {
     name: PropTypes.shape({
       first: PropTypes.string.isRequired,
@@ -66,7 +79,8 @@ export default class ClientForm extends Component {
       mACRS: PropTypes.bool.isRequired,
       nantucketSolar: PropTypes.bool.isRequired,
       netMetering: PropTypes.bool.isRequired
-    }).isRequired
+    }).isRequired,
+    handleChange: PropTypes.func.isRequired
   }
 
   static defaultProps = {
@@ -76,38 +90,61 @@ export default class ClientForm extends Component {
     }
   }
 
+  handleChange(e) {
+    const { category } = e.target.dataset
+    const { name, value } = e.target
+    this.props.handleChange(value, name, category)
+  }
+
+  handleToggle(e) {
+    const { category } = e.target.dataset
+    const { name } = e.target
+    this.props.handleToggle(name, category)
+  }
+
+  // componentDidUpdate() {
+  //   console.log(JSON.stringify(this.props, null, 2))
+  // }
+
   render() {
     return (
       <Form>
         <h2>Customer info</h2>
-        {Object.keys(this.props).map(
-          prop =>
-            typeof this.props[prop] === "object" ? (
-              <Fragment>
-                <Legend>
-                  <h2>{prop}</h2>
-                </Legend>
-                <Fieldset>
-                  {Object.keys(this.props[prop]).map(subProp => (
-                    <InputGroup>
-                      <label htmlFor={subProp}>{subProp}</label>
-                      <input type="text" value={this.props[prop][subProp]} />
+        {Object.keys(this.props).map(category => (
+          <Fragment key={category}>
+            <Legend>
+              <h2>{category.toUpperCase()}</h2>
+            </Legend>
+            <Fieldset>
+              {Object.keys(this.props[category]).map(
+                name =>
+                  typeof this.props[category][name] !== "boolean" ? (
+                    <InputGroup key={name}>
+                      <label htmlFor={name}>{name}</label>
+                      <Input
+                        type="text"
+                        data-category={category}
+                        name={name}
+                        value={this.props[category][name]}
+                        onChange={this.handleChange}
+                      />
                     </InputGroup>
-                  ))}
-                </Fieldset>
-              </Fragment>
-            ) : (
-              <Fragment>
-                <Legend>{prop}</Legend>
-                <Fieldset>
-                  <InputGroup>
-                    <label htmlFor={prop}>{prop}</label>
-                    <input type="text" value={this.props[prop]} />
-                  </InputGroup>
-                </Fieldset>
-              </Fragment>
-            )
-        )}
+                  ) : (
+                    <InputGroup key={name} row>
+                      <Checkbox
+                        type="button"
+                        data-category={category}
+                        name={name}
+                        on={this.props[category][name]}
+                        onClick={this.handleToggle}
+                        value={name}
+                      />
+                    </InputGroup>
+                  )
+              )}
+            </Fieldset>
+          </Fragment>
+        ))}
       </Form>
     )
   }

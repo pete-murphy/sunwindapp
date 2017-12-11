@@ -5,6 +5,9 @@ import ClientForm from "./components/ClientForm"
 class App extends Component {
   constructor() {
     super()
+
+    this.handleClientChange = this.handleClientChange.bind(this)
+    this.handleClientToggle = this.handleClientToggle.bind(this)
     this.state = {
       client: {
         name: {
@@ -17,9 +20,12 @@ class App extends Component {
           town: "",
           zip: ""
         },
+        financialInfo: {
+          sRECMarketSector: 1,
+          isCommercial: true,
+          taxRate: 0.35
+        },
         usageData: Array(12).fill(0),
-        sRECMarketSector: 1,
-        isCommercial: true,
         incentivePrograms: {
           fITC: true,
           sMART: false,
@@ -27,8 +33,7 @@ class App extends Component {
           mACRS: true,
           nantucketSolar: false,
           netMetering: true
-        },
-        taxRate: 0.35
+        }
       },
       system: {
         arrays: [
@@ -57,8 +62,36 @@ class App extends Component {
     }
   }
 
+  handleClientChange(value, name, category) {
+    this.setState(
+      ({ client }) =>
+        category ? (client[category][name] = value) : (client[name] = value)
+    )
+  }
+
+  handleClientToggle(name, category) {
+    console.log("Then: ", JSON.stringify(this.state.client, null, 2))
+    this.setState(
+      ({ client }) =>
+        category
+          ? (client[category][name] = !client[category][name])
+          : (client[name] = !client[name])
+    )
+  }
+
+  componentDidUpdate() {
+    const { client } = this.state
+    console.log("Now: ", JSON.stringify(client, null, 2))
+  }
+
   render() {
-    return <ClientForm {...this.state.client} />
+    return (
+      <ClientForm
+        {...this.state.client}
+        handleChange={this.handleClientChange}
+        handleToggle={this.handleClientToggle}
+      />
+    )
   }
 }
 

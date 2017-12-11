@@ -5,12 +5,6 @@ import registerServiceWorker from "./registerServiceWorker"
 
 import { injectGlobal } from "styled-components"
 
-const peach = "#efada0"
-const peachDark = "#e37059"
-const night = "#333"
-const surDark = "#24828f"
-const haus = "#f3f4f4"
-
 injectGlobal`
 :root {
   --night: #333;
@@ -19,6 +13,13 @@ injectGlobal`
   --peachDark: #e37059;
   --surDark: #24828f;
   font-size: 20px;
+}
+
+input[type="checkbox"] {
+  display: inline-block;
+  &:checked {
+    background: var(--peach);
+  }
 }
 
 body {
@@ -38,7 +39,7 @@ input {
   background: transparent;
   border: none;
   color: var(--night);
-  border-bottom: 1px solid ${night};
+  border-bottom: 1px solid var(--night);
   font-size: 1rem;
   &:focus {
     outline: none;
