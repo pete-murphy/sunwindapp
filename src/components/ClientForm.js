@@ -110,41 +110,44 @@ export default class ClientForm extends Component {
     return (
       <Form>
         <h2>Customer info</h2>
-        {Object.keys(this.props).map(category => (
-          <Fragment key={category}>
-            <Legend>
-              <h2>{category.toUpperCase()}</h2>
-            </Legend>
-            <Fieldset>
-              {Object.keys(this.props[category]).map(
-                name =>
-                  typeof this.props[category][name] !== "boolean" ? (
-                    <InputGroup key={name}>
-                      <label htmlFor={name}>{name}</label>
-                      <Input
-                        type="text"
-                        data-category={category}
-                        name={name}
-                        value={this.props[category][name]}
-                        onChange={this.handleChange}
-                      />
-                    </InputGroup>
-                  ) : (
-                    <InputGroup key={name} row>
-                      <Checkbox
-                        type="button"
-                        data-category={category}
-                        name={name}
-                        on={this.props[category][name]}
-                        onClick={this.handleToggle}
-                        value={name}
-                      />
-                    </InputGroup>
-                  )
-              )}
-            </Fieldset>
-          </Fragment>
-        ))}
+        {Object.keys(this.props).map(
+          category =>
+            typeof this.props[category] !== "function" && (
+              <Fragment key={category}>
+                <Legend>
+                  <h2>{category}</h2>
+                </Legend>
+                <Fieldset>
+                  {Object.keys(this.props[category]).map(
+                    name =>
+                      typeof this.props[category][name] !== "boolean" ? (
+                        <InputGroup key={name}>
+                          <label htmlFor={name}>{name}</label>
+                          <Input
+                            type="text"
+                            data-category={category}
+                            name={name}
+                            value={this.props[category][name]}
+                            onChange={this.handleChange}
+                          />
+                        </InputGroup>
+                      ) : (
+                        <InputGroup key={name} row>
+                          <Checkbox
+                            type="button"
+                            data-category={category}
+                            name={name}
+                            on={this.props[category][name]}
+                            onClick={this.handleToggle}
+                            value={name}
+                          />
+                        </InputGroup>
+                      )
+                  )}
+                </Fieldset>
+              </Fragment>
+            )
+        )}
       </Form>
     )
   }

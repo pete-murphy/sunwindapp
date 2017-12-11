@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import { BrowserRouter as Router, Route, Link } from "react-router-dom"
 
 import ClientForm from "./components/ClientForm"
 
@@ -83,11 +84,19 @@ class App extends Component {
 
   render() {
     return (
-      <ClientForm
-        {...this.state.client}
-        handleChange={this.handleClientChange}
-        handleToggle={this.handleClientToggle}
-      />
+      <Router>
+        <Route
+          path="/client"
+          exact
+          render={() => (
+            <ClientForm
+              {...this.state.client}
+              handleChange={this.handleClientChange}
+              handleToggle={this.handleClientToggle}
+            />
+          )}
+        />
+      </Router>
     )
   }
 }
