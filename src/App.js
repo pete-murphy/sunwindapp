@@ -21,10 +21,16 @@ const Sidebar = styled.div`
   background-color: var(--night);
 `
 
+const UL = styled.ul`
+  list-style: none;
+  margin: 0;
+  padding: 0;
+`
+
 export const StyledNavLink = styled(NavLink)`
   text-decoration: none;
   color: var(--peach);
-  transition: 1s all;
+  transition: 0.2s all;
   &.active {
     color: var(--haus);
   }
@@ -140,6 +146,14 @@ class App extends Component {
           </Main>
           <Sidebar>
             <h2>Sidebar</h2>
+            <UL>
+              <li>
+                <StyledNavLink to="/client">Client information</StyledNavLink>
+              </li>
+              <li>
+                <StyledNavLink to="/system">System parameters</StyledNavLink>
+              </li>
+            </UL>
           </Sidebar>
         </Container>
       </Router>

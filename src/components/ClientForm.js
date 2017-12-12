@@ -44,10 +44,16 @@ const InputGroup = styled.div`
 
 const Input = styled.input``
 
-const Checkbox = styled.input`
+const Toggle = styled.input`
   font-size: 0.75rem;
   width: 100%;
+  transition: 0.2s all;
   background-color: ${props => (props.on ? "var(--peach)" : "transparent")};
+  border: 1px solid currentColor;
+`
+
+const ToggleUnits = Toggle.extend`
+  background-color: ${props => (props.kWh ? "var(--pear)" : "var(--sur)")};
 `
 
 export default class ClientForm extends Component {
@@ -105,50 +111,96 @@ export default class ClientForm extends Component {
     this.props.handleToggle(name, category)
   }
 
+  state = {
+    ballparkUsageData: false,
+    usageDataInKWh: true
+  }
+
   // componentDidUpdate() {
   //   console.log(JSON.stringify(this.props, null, 2))
   // }
-
   render() {
+    const { ballparkUsageData } = this.state
     return (
       <Form>
         <h1>Customer Info</h1>
         {Object.keys(this.props).map(
           category =>
-            typeof this.props[category] !== "function" && (
-              <Fragment key={category}>
+            category === "usageData" ? (
+              <Fragment>
                 <Legend>
                   <h2>{camelToTitle(category)}</h2>
                 </Legend>
                 <Fieldset>
-                  {Object.keys(this.props[category]).map(
-                    param =>
-                      typeof this.props[category][param] !== "boolean" ? (
-                        <InputGroup key={param}>
-                          <label htmlFor={param}>{camelToTitle(param)}</label>
-                          <Input
-                            type="text"
-                            data-category={category}
-                            name={param}
-                            value={this.props[category][param]}
-                            onChange={this.handleChange}
-                          />
-                        </InputGroup>
-                      ) : (
-                        <InputGroup key={param} row>
-                          <Checkbox
-                            type="button"
-                            data-category={category}
-                            name={param}
-                            on={this.props[category][param]}
-                            onClick={this.handleToggle}
-                            value={camelToTitle(param)}
-                          />
-                        </InputGroup>
-                      )
-                  )}
+                  <Toggle
+                    type="button"
+                    on={this.state.ballparkUsageData}
+                    value="Ballpark Usage Data?"
+                    onClick={() =>
+                      this.setState(({ ballparkUsageData }) => ({
+                        ballparkUsageData: !ballparkUsageData
+                      }))
+                    }
+                  />
+                  <InputGroup>
+                    <label>Arbitrary Usage Value</label>
+                    <Input
+                      type="text"
+                      value={this.state.usageValue}
+                      onChange={this.handleUsageChange}
+                    />
+                  </InputGroup>
+                  <ToggleUnits
+                    type="button"
+                    value={
+                      (this.state.usageDataInKWh ? "kWh" : "Dollars") +
+                      (this.state.ballparkUsageData ? " per Year" : "")
+                    }
+                    kWh={this.state.usageDataInKWh}
+                    onClick={() =>
+                      this.setState(({ usageDataInKWh }) => ({
+                        usageDataInKWh: !usageDataInKWh
+                      }))
+                    }
+                  />
                 </Fieldset>
               </Fragment>
+            ) : (
+              typeof this.props[category] !== "function" && (
+                <Fragment key={category}>
+                  <Legend>
+                    <h2>{camelToTitle(category)}</h2>
+                  </Legend>
+                  <Fieldset>
+                    {Object.keys(this.props[category]).map(
+                      param =>
+                        typeof this.props[category][param] !== "boolean" ? (
+                          <InputGroup key={param}>
+                            <label htmlFor={param}>{camelToTitle(param)}</label>
+                            <Input
+                              type="text"
+                              data-category={category}
+                              name={param}
+                              value={this.props[category][param]}
+                              onChange={this.handleChange}
+                            />
+                          </InputGroup>
+                        ) : (
+                          <InputGroup key={param} row>
+                            <Toggle
+                              type="button"
+                              data-category={category}
+                              name={param}
+                              on={this.props[category][param]}
+                              onClick={this.handleToggle}
+                              value={camelToTitle(param)}
+                            />
+                          </InputGroup>
+                        )
+                    )}
+                  </Fieldset>
+                </Fragment>
+              )
             )
         )}
       </Form>
