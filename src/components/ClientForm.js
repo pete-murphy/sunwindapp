@@ -64,9 +64,10 @@ export default class ClientForm extends Component {
       last: PropTypes.string.isRequired
     }).isRequired, // Is this "isRequired" redundant if inner properties are required?
     address: PropTypes.shape({
-      number: PropTypes.string.isRequired,
-      street: PropTypes.string.isRequired,
-      town: PropTypes.string.isRequired
+      line1: PropTypes.string.isRequired,
+      line2: PropTypes.string,
+      town: PropTypes.string.isRequired,
+      zip: PropTypes.string.isRequired
     }).isRequired,
     financialInfo: PropTypes.shape({
       isCommercial: PropTypes.bool.isRequired,
@@ -121,27 +122,27 @@ export default class ClientForm extends Component {
                 </Legend>
                 <Fieldset>
                   {Object.keys(this.props[category]).map(
-                    name =>
-                      typeof this.props[category][name] !== "boolean" ? (
-                        <InputGroup key={name}>
-                          <label htmlFor={name}>{camelToTitle(name)}</label>
+                    param =>
+                      typeof this.props[category][param] !== "boolean" ? (
+                        <InputGroup key={param}>
+                          <label htmlFor={param}>{camelToTitle(param)}</label>
                           <Input
                             type="text"
                             data-category={category}
-                            name={name}
-                            value={this.props[category][name]}
+                            name={param}
+                            value={this.props[category][param]}
                             onChange={this.handleChange}
                           />
                         </InputGroup>
                       ) : (
-                        <InputGroup key={name} row>
+                        <InputGroup key={param} row>
                           <Checkbox
                             type="button"
                             data-category={category}
-                            name={name}
-                            on={this.props[category][name]}
+                            name={param}
+                            on={this.props[category][param]}
                             onClick={this.handleToggle}
-                            value={name}
+                            value={camelToTitle(param)}
                           />
                         </InputGroup>
                       )

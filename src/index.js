@@ -11,6 +11,9 @@ injectGlobal`
   --haus: #f3f4f4;
   --peach: #efada0;
   --peachDark: #e37059;
+  --pear: #93daab;
+  --pearDark: #2e854b;
+  --sur: #96dbe4;
   --surDark: #24828f;
   font-size: 20px;
 }

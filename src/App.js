@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { BrowserRouter as Router, Route, Link } from "react-router-dom"
+import { BrowserRouter as Router, Route, NavLink } from "react-router-dom"
 import styled from "styled-components"
 
 import ClientForm from "./components/ClientForm"
@@ -15,14 +15,22 @@ const Container = styled.div`
     overflow: scroll;
   }
 `
-export const Main = styled.div`
-  grid-column: 1 / 2;
-`
+const Main = styled.div``
 
-export const Sidebar = styled.div`
-  grid-column: 2 / 3;
+const Sidebar = styled.div`
   background-color: var(--night);
 `
+
+export const StyledNavLink = styled(NavLink)`
+  text-decoration: none;
+  color: var(--peach);
+  transition: 1s all;
+  &.active {
+    color: var(--haus);
+  }
+`
+
+const defaultTitle = "SunWind App"
 
 class App extends Component {
   constructor() {
@@ -37,8 +45,8 @@ class App extends Component {
           first: ""
         },
         address: {
-          number: "",
-          street: "",
+          line1: "",
+          line2: "",
           town: "",
           zip: ""
         },
@@ -71,12 +79,6 @@ class App extends Component {
             output: []
           }
         ],
-        defaultSettings: {
-          moduleType: 1,
-          // Fetch data from Boston TMY2
-          lat: 41.68,
-          lon: -69.96
-        },
         hasError: true,
         hasSubmitted: false,
         totalSystemCost: 0
@@ -85,22 +87,27 @@ class App extends Component {
   }
 
   handleClientChange(value, name, category) {
-    this.setState(
-      ({ client }) =>
-        category ? (client[category][name] = value) : (client[name] = value)
-    )
+    const client = { ...this.state.client }
+    client[category][name] = value
+    this.setState(({ client }) => client)
   }
 
   handleClientToggle(name, category) {
-    console.log("Then: ", JSON.stringify(this.state.client, null, 2))
     const client = { ...this.state.client }
     client[category][name] = !client[category][name]
     this.setState(({ client }) => client)
   }
 
+  componentDidMount() {
+    document.title = defaultTitle
+  }
+
   componentDidUpdate() {
-    const { client } = this.state
-    console.log("Now: ", JSON.stringify(client, null, 2))
+    const lastName = this.state.client.name.last
+    const address = this.state.client.address.line1
+    lastName !== ""
+      ? (document.title = lastName + (address !== "" ? `, ${address}` : ""))
+      : (document.title = defaultTitle)
   }
 
   render() {
