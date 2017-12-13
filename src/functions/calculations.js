@@ -1,4 +1,4 @@
-import { range, format } from "./library"
+import { range, format, sum } from "./library"
 
 const getAnnualEnergyProduced = (
   year,
@@ -18,6 +18,11 @@ const getSRECMarketValue = (
 ) =>
   year < 10
     ? Math.floor(initialSRECValue * (1 - annualDecreaseRate) ** year)
+    : 0
+
+const getSMARTValue = (year, initialSMARTValue, annualDecreaseRate = 0.05) =>
+  year < 10
+    ? Math.floor(initialSMARTValue * (1 - annualDecreaseRate) ** year)
     : 0
 
 const getAnnualSRECsMonetized = (
@@ -92,6 +97,14 @@ const getAnnualSRECRevenue = (
     year,
     getAnnualEnergyProduced(year, firstYearAnnualProduction)
   ) * getSRECMarketValue(year, initialSRECValue)
+
+const getAnnualSMARTRevenue = (
+  year,
+  firstYearAnnualProduction,
+  initialSMARTValue
+) =>
+  getAnnualEnergyProduced(year, firstYearAnnualProduction) *
+  getSMARTValue(year, initialSMARTValue)
 
 const getAnnualNetMeteringSavings = (
   year,
@@ -172,8 +185,9 @@ export const generateLifetimeAnnualData = (
         taxBasis
       ))
     sMART &&
-      (lifetimeData[year]["SMART Revenue"] = getSMARTRevenue(
+      (lifetimeData[year]["SMART Revenue"] = getAnnualSMARTRevenue(
         year,
+        firstYearAnnualProduction,
         initialSMARTValue
       ))
     sREC &&
@@ -215,7 +229,7 @@ export const getPaybackPeriod = (
   firstYearAnnualProduction,
   taxBasis
 ) =>
-  generateAnnualLifetimeData(startYear, firstYearAnnualProduction, taxBasis)
+  generateLifetimeAnnualData(startYear, firstYearAnnualProduction, taxBasis)
     .map(year =>
       Object.keys(year)
         .filter(key => key !== "Year")

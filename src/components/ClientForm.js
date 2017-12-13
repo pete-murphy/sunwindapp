@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react"
 import PropTypes from "prop-types"
 import styled from "styled-components"
 
+import Checkbox from "./Checkbox"
 import { camelToTitle } from "../functions/library"
 
 const Form = styled.form`
@@ -22,11 +23,12 @@ const Legend = styled.div`
     display: flex;
     align-items: center;
     &:after {
+      height: 0.5ex;
       margin-left: 0.5rem;
       content: "";
       flex: 1 auto;
       border: none;
-      border-top: 1px solid var(--night);
+      border-bottom: 1px solid var(--peachDark);
     }
   }
 `
@@ -44,15 +46,7 @@ const InputGroup = styled.div`
 
 const Input = styled.input``
 
-const Toggle = styled.input`
-  font-size: 0.75rem;
-  width: 100%;
-  transition: 0.2s all;
-  background-color: ${props => (props.on ? "var(--peach)" : "transparent")};
-  border: 1px solid currentColor;
-`
-
-const ToggleUnits = Toggle.extend`
+const ToggleUnits = styled.input`
   background-color: ${props => (props.kWh ? "var(--pear)" : "var(--sur)")};
 `
 
@@ -120,7 +114,6 @@ export default class ClientForm extends Component {
   //   console.log(JSON.stringify(this.props, null, 2))
   // }
   render() {
-    const { ballparkUsageData } = this.state
     return (
       <Form>
         <h1>Customer Info</h1>
@@ -132,10 +125,10 @@ export default class ClientForm extends Component {
                   <h2>{camelToTitle(category)}</h2>
                 </Legend>
                 <Fieldset>
-                  <Toggle
+                  <Checkbox
                     type="button"
                     on={this.state.ballparkUsageData}
-                    value="Ballpark Usage Data?"
+                    label="Ballpark Usage Data?"
                     onClick={() =>
                       this.setState(({ ballparkUsageData }) => ({
                         ballparkUsageData: !ballparkUsageData
@@ -146,7 +139,7 @@ export default class ClientForm extends Component {
                     <label>Arbitrary Usage Value</label>
                     <Input
                       type="text"
-                      value={this.state.usageValue}
+                      label={this.state.usageValue}
                       onChange={this.handleUsageChange}
                     />
                   </InputGroup>
@@ -187,7 +180,7 @@ export default class ClientForm extends Component {
                           </InputGroup>
                         ) : (
                           <InputGroup key={param} row>
-                            <Toggle
+                            <Checkbox
                               type="button"
                               data-category={category}
                               name={param}

@@ -4,6 +4,14 @@ import styled from "styled-components"
 
 import ClientForm from "./components/ClientForm"
 import SystemForm from "./components/SystemForm"
+import TestComponent from "./components/TestComponent"
+
+import {
+  generateLifetimeAnnualData,
+  getPaybackPeriod
+} from "./functions/calculations"
+import { fetchPVWatts } from "./functions/fetchPVWatts"
+import { sum } from "./functions/library"
 
 const Container = styled.div`
   display: grid;
@@ -104,6 +112,59 @@ class App extends Component {
     this.setState(({ client }) => client)
   }
 
+  handleSubmit() {
+    // const { arrays, defaultSettings } = this.state.system
+    // const promises = arrays.map((array, index) => {
+    //   const { moduleAmount, moduleCapacity, tilt, azimuth, arrayType } = array
+    //   const systemCapacity = moduleAmount * moduleCapacity / 1000
+    //   return fetchPVWatts(systemCapacity, tilt, azimuth, arrayType)
+    // })
+
+    // Promise.all(promises).then(outputs => {
+    //   const systemOutputs = outputs.map(acMonthly => {
+    //     const acAnnual = acMonthly.reduce((a, b) => a + b)
+    //     return { acAnnual, acMonthly }
+    //   })
+    //   this.setState(({system}) => ({
+    //     system: {
+    //       ...system,
+    //       system: {
+    //         arrays: systemOutputs
+    //       }
+    //     }
+    //   }))
+    // })
+
+    // this.setState({
+    //   inputs: { ...this.state.inputs, hasSubmitted: true }
+    // })
+
+    const { arrays, defaultSettings } = this.state.system
+    arrays.forEach((array, index) => {
+      const {
+        moduleAmount,
+        moduleCapacity,
+        tilt,
+        azimuth,
+        arrayType,
+        losses
+      } = array
+      const systemCapacity = moduleAmount * moduleCapacity / 1000
+      fetchPVWatts(systemCapacity, tilt, azimuth, arrayType, losses).then(
+        acMonthly => {
+          const arrays = { ...this.system.arrays }
+          arrays[index] = acMonthly
+          this.setState(({ system }) => ({
+            system: {
+              ...system,
+              arrays
+            }
+          }))
+        }
+      )
+    })
+  }
+
   componentDidMount() {
     document.title = defaultTitle
   }
@@ -143,6 +204,7 @@ class App extends Component {
                 />
               )}
             />
+            <Route path="/test" exact render={() => <TestComponent />} />
           </Main>
           <Sidebar>
             <h2>Sidebar</h2>
@@ -152,6 +214,9 @@ class App extends Component {
               </li>
               <li>
                 <StyledNavLink to="/system">System parameters</StyledNavLink>
+              </li>
+              <li>
+                <StyledNavLink to="/test">Test things</StyledNavLink>
               </li>
             </UL>
           </Sidebar>
