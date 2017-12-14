@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { BrowserRouter as Router, Route, NavLink } from "react-router-dom"
 import styled from "styled-components"
 
-import ClientForm from "./components/ClientForm"
+import Client from "./components/forms/Client"
 import SystemForm from "./components/SystemForm"
 import TestComponent from "./components/TestComponent"
 
@@ -50,8 +50,7 @@ class App extends Component {
   constructor() {
     super()
 
-    this.handleClientChange = this.handleClientChange.bind(this)
-    this.handleClientToggle = this.handleClientToggle.bind(this)
+    this.handleChange = this.handleChange.bind(this)
     this.state = {
       client: {
         name: {
@@ -63,13 +62,10 @@ class App extends Component {
           line2: "",
           town: "",
           zip: ""
-        },
-        financialInfo: {
-          sRECMarketSector: 1,
-          isCommercial: true,
-          taxRate: 0.35
-        },
-        usageData: Array(12).fill(0),
+        }
+      },
+      classification: {
+        isCommercial: false,
         incentivePrograms: {
           fITC: true,
           sMART: false,
@@ -77,8 +73,11 @@ class App extends Component {
           mACRS: true,
           nantucketSolar: false,
           netMetering: true
-        }
+        },
+        sRECMarketSector: 1,
+        mACRSTaxRate: 0.35
       },
+      usageData: Array(12).fill(0),
       system: {
         arrays: [
           {
@@ -93,52 +92,25 @@ class App extends Component {
             output: []
           }
         ],
-        hasError: true,
-        hasSubmitted: false,
-        totalSystemCost: 0
-      }
+        defaultSettings: {
+          moduleType: 1,
+          // This is data from Boston TMY2
+          lat: 41.68,
+          lon: -69.96
+        }
+      },
+      arbitraryOutput: 0,
+      systemCost: 0,
+      hasError: true,
+      hasSubmitted: false
     }
   }
 
-  handleClientChange(value, name, category) {
-    const client = { ...this.state.client }
-    client[category][name] = value
-    this.setState(({ client }) => client)
-  }
-
-  handleClientToggle(name, category) {
-    const client = { ...this.state.client }
-    client[category][name] = !client[category][name]
-    this.setState(({ client }) => client)
+  handleChange(state) {
+    this.setState(() => state)
   }
 
   handleSubmit() {
-    // const { arrays, defaultSettings } = this.state.system
-    // const promises = arrays.map((array, index) => {
-    //   const { moduleAmount, moduleCapacity, tilt, azimuth, arrayType } = array
-    //   const systemCapacity = moduleAmount * moduleCapacity / 1000
-    //   return fetchPVWatts(systemCapacity, tilt, azimuth, arrayType)
-    // })
-
-    // Promise.all(promises).then(outputs => {
-    //   const systemOutputs = outputs.map(acMonthly => {
-    //     const acAnnual = acMonthly.reduce((a, b) => a + b)
-    //     return { acAnnual, acMonthly }
-    //   })
-    //   this.setState(({system}) => ({
-    //     system: {
-    //       ...system,
-    //       system: {
-    //         arrays: systemOutputs
-    //       }
-    //     }
-    //   }))
-    // })
-
-    // this.setState({
-    //   inputs: { ...this.state.inputs, hasSubmitted: true }
-    // })
-
     const { arrays, defaultSettings } = this.state.system
     arrays.forEach((array, index) => {
       const {
@@ -186,24 +158,13 @@ class App extends Component {
               path="/client"
               exact
               render={() => (
-                <ClientForm
+                <Client
                   {...this.state.client}
-                  handleChange={this.handleClientChange}
-                  handleToggle={this.handleClientToggle}
+                  handleChange={this.handleChange}
                 />
               )}
             />
-            <Route
-              path="/system"
-              exact
-              render={() => (
-                <SystemForm
-                  {...this.state.client}
-                  handleChange={this.handleClientChange}
-                  handleToggle={this.handleClientToggle}
-                />
-              )}
-            />
+            <Route path="/system" exact render={() => <SystemForm />} />
             <Route path="/test" exact render={() => <TestComponent />} />
           </Main>
           <Sidebar>
