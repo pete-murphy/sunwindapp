@@ -2,8 +2,9 @@ import React, { Component } from "react"
 import { BrowserRouter as Router, Route, NavLink } from "react-router-dom"
 import styled from "styled-components"
 
-import Client from "./components/forms/Client"
-import SystemForm from "./components/SystemForm"
+import ClientInfo from "./components/forms/ClientInfo"
+import ProjectInfo from "./components/forms/ProjectInfo"
+
 import TestComponent from "./components/TestComponent"
 
 import {
@@ -52,9 +53,9 @@ class App extends Component {
 
     this.handleChange = this.handleChange.bind(this)
     this.state = {
-      client: {
+      clientInfo: {
         name: {
-          last: "",
+          last: "BOod",
           first: ""
         },
         address: {
@@ -64,7 +65,7 @@ class App extends Component {
           zip: ""
         }
       },
-      classification: {
+      projectInfo: {
         isCommercial: false,
         incentivePrograms: {
           fITC: true,
@@ -142,8 +143,8 @@ class App extends Component {
   }
 
   componentDidUpdate() {
-    const lastName = this.state.client.name.last
-    const address = this.state.client.address.line1
+    const lastName = this.state.clientInfo.name.last
+    const address = this.state.clientInfo.address.line1
     lastName !== ""
       ? (document.title = lastName + (address !== "" ? `, ${address}` : ""))
       : (document.title = defaultTitle)
@@ -158,13 +159,22 @@ class App extends Component {
               path="/client"
               exact
               render={() => (
-                <Client
-                  {...this.state.client}
+                <ClientInfo
+                  clientInfo={this.state.clientInfo}
                   handleChange={this.handleChange}
                 />
               )}
             />
-            <Route path="/system" exact render={() => <SystemForm />} />
+            <Route
+              path="/project"
+              exact
+              render={() => (
+                <ProjectInfo
+                  projectInfo={this.state.projectInfo}
+                  handleChange={this.handleChange}
+                />
+              )}
+            />
             <Route path="/test" exact render={() => <TestComponent />} />
           </Main>
           <Sidebar>
@@ -172,6 +182,9 @@ class App extends Component {
             <UL>
               <li>
                 <StyledNavLink to="/client">Client information</StyledNavLink>
+              </li>
+              <li>
+                <StyledNavLink to="/project">Project settings</StyledNavLink>
               </li>
               <li>
                 <StyledNavLink to="/system">System parameters</StyledNavLink>

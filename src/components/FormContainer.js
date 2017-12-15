@@ -12,8 +12,14 @@ const Container = styled.div`
   }
 `
 
+const Secondary = styled.div``
+
 export default class FormContainer extends Component {
   render() {
-    return <Container>{this.props.children}</Container>
+    return (
+      <Container>
+        <Secondary>{this.props.children}</Secondary>
+      </Container>
+    )
   }
 }
