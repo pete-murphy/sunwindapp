@@ -45,18 +45,12 @@ export default class ProjectInfo extends Component {
   }
 
   handleClick(s) {
-    console.log({ s })
-    // const { name, checked } = e.target
-    // console.log({ name, checked })
-    // const { category } = e.target.dataset
-    // console.log({ category })
-    // const projectInfo = { ...this.props.projectInfo }
-    // console.log(JSON.stringify(projectInfo, null, 2))
-    // category
-    //   ? (projectInfo[category][name] = !projectInfo[category][name])
-    //   : (projectInfo[name] = !projectInfo[name])
-    // console.log(JSON.stringify(projectInfo, null, 2))
-    // this.props.handleChange(projectInfo)
+    const { name, checked, category } = s
+    const projectInfo = { ...this.props.projectInfo }
+    category
+      ? (projectInfo[category][name] = !projectInfo[category][name])
+      : (projectInfo[name] = !projectInfo[name])
+    this.props.handleChange(projectInfo)
   }
 
   render() {
@@ -82,7 +76,7 @@ export default class ProjectInfo extends Component {
                   <InputGroup key={field}>
                     <Checkbox
                       type="text"
-                      data-category={category}
+                      category={category}
                       name={field}
                       label={camelToTitle(field)}
                       handleClick={this.handleClick}

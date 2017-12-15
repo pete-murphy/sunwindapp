@@ -44,10 +44,6 @@ export default class Checkbox extends Component {
   handleClick = () => {
     console.log(JSON.stringify(this.props, null, 2))
     this.setState(({ checked }) => ({ checked: !checked }))
-  }
-
-  componentDidUpdate() {
-    console.log(JSON.stringify(this.state))
     this.props.handleClick(this.state)
   }
 
