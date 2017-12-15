@@ -18,7 +18,7 @@ const SVG = styled.svg`
   margin-right: 0.5rem;
   & circle {
     clip-path: url(#clipPath);
-    transition: 0.3s ease all;
+    transition: 0.2s ease all;
     stroke-width: ${props => (props.checked ? "20" : "0")};
     stroke: var(--peachDark);
   }

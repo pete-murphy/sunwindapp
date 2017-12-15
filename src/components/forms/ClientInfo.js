@@ -55,7 +55,7 @@ export default class ClientInfo extends Component {
       <FormContainer>
         <h2>Client Info</h2>
         {Object.keys(this.props.clientInfo).map(category => (
-          <Fragment>
+          <Fragment key={category}>
             <h3>{camelToTitle(category)}</h3>
             {Object.keys(this.props.clientInfo[category]).map(field => (
               <InputGroup key={field}>

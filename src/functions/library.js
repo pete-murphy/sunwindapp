@@ -35,7 +35,23 @@ export const format = fmt => num => {
       currency: "USD"
     })
   }
-  if (fmt === "n") {
+  if (fmt === ",") {
     return Math.round(num).toLocaleString("en-US")
   }
 }
+
+export const numToMon = num =>
+  [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+  ][num]
