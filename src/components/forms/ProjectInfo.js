@@ -13,7 +13,7 @@ const InputGroup = styled.div`
   padding: 0.5rem;
   grid-column: span ${props => (props.span ? props.span : "1")};
   & label {
-    font-size: 0.75rem;
+    font-size: 1rem;
   }
 `
 
@@ -56,8 +56,7 @@ export default class ProjectInfo extends Component {
 
   render() {
     return (
-      <FormContainer>
-        <h2>Project Settings</h2>
+      <FormContainer header="Project Settings">
         {Object.keys(this.props.projectInfo).map(
           category =>
             typeof this.props.projectInfo[category] !== "object" ? (

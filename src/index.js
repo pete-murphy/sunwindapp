@@ -15,11 +15,12 @@ injectGlobal`
   --pearDark: #2e854b;
   --sur: #96dbe4;
   --surDark: #24828f;
-  font-size: 20px;
+  font-size: 16px;
+  line-height: 1.4128;
 }
 
 body {
-  color: var(--peachDark);
+  color: var(--night);
   margin: 0;
   padding: 0;
   background: var(--haus);

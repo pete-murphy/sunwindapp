@@ -4,9 +4,14 @@ import styled from "styled-components"
 const Container = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   min-height: 100%;
   width: 100%;
+  flex-direction: column;
+`
+
+const Header = styled.h2`
+  font-weight: 800;
 `
 
 const Grid = styled.div`
@@ -24,12 +29,11 @@ const Grid = styled.div`
   }
 `
 
-const Secondary = styled.div``
-
 export default class FormContainer extends Component {
   render() {
     return (
       <Container>
+        <Header>{this.props.header}</Header>
         <Grid cols={this.props.cols}>{this.props.children}</Grid>
       </Container>
     )

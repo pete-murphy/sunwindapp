@@ -19,21 +19,21 @@ const SVG = styled.svg`
   & circle {
     clip-path: url(#clipPath);
     transition: 0.2s ease all;
-    stroke-width: ${props => (props.checked ? "20" : "0")};
+    stroke-width: ${props => (props.checked ? "16" : "0")};
     stroke: var(--peachDark);
   }
 `
 
 const CheckboxSVG = props => (
-  <SVG checked={props.checked} viewbox="0 0 20 20">
+  <SVG checked={props.checked} viewbox="0 0 16 16">
     <defs>
       <clipPath id="clipPath">
-        <rect x="3" y="3" width="14" height="14" />
+        <rect x="3" y="3" width="10" height="10" />
       </clipPath>
     </defs>
 
-    <circle cx="10" cy="10" r="10" />
-    <rect x="0" y="0" width="20" height="20" />
+    <circle cx="8" cy="8" r="8" />
+    <rect x="0" y="0" width="16" height="16" />
   </SVG>
 )
 

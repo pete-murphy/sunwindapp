@@ -12,7 +12,7 @@ const InputGroup = styled.div`
   max-width: 100%;
   grid-column: ${props => (props.span ? props.span : "1")};
   & label {
-    font-size: 0.75rem;
+    font-size: 1rem;
   }
   & input {
     padding: 0.25rem;

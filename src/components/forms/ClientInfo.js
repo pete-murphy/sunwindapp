@@ -12,7 +12,7 @@ const InputGroup = styled.div`
   padding: 0.5rem;
   grid-column: span ${props => (props.span ? props.span : "1")};
   & label {
-    font-size: 0.75rem;
+    font-size: 1rem;
   }
   & input {
     padding: 0.25rem;
@@ -52,8 +52,7 @@ export default class ClientInfo extends Component {
 
   render() {
     return (
-      <FormContainer>
-        <h2>Client Info</h2>
+      <FormContainer header="Client Info">
         {Object.keys(this.props.clientInfo).map(category => (
           <Fragment key={category}>
             <h3>{camelToTitle(category)}</h3>

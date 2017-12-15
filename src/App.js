@@ -5,6 +5,7 @@ import styled from "styled-components"
 import ClientInfo from "./components/forms/ClientInfo"
 import ProjectInfo from "./components/forms/ProjectInfo"
 import UsageData from "./components/forms/UsageData"
+import SystemParams from "./components/forms/SystemParams"
 
 import TestComponent from "./components/TestComponent"
 
@@ -178,6 +179,16 @@ class App extends Component {
               render={() => (
                 <UsageData
                   usageData={this.state.usageData}
+                  handleChange={this.handleChange}
+                />
+              )}
+            />
+            <Route
+              path="/system"
+              exact
+              render={() => (
+                <SystemParams
+                  system={this.state.system}
                   handleChange={this.handleChange}
                 />
               )}

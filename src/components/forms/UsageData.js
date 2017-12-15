@@ -14,7 +14,7 @@ const InputGroup = styled.div`
   padding: 0.5rem;
   grid-column: span ${props => (props.span ? props.span : "1")};
   & label {
-    font-size: ${props => (props.row ? "1rem" : ".75rem")};
+    font-size: 1rem;
     padding-right: ${props => (props.row ? "1rem" : "0")};
   }
   & input {
@@ -42,8 +42,7 @@ export default class UsageData extends Component {
 
   render() {
     return (
-      <FormContainer cols={2}>
-        <h2>Usage Data</h2>
+      <FormContainer cols={2} header="Usage Data">
         {Object.keys(this.props.usageData).map(month => (
           <InputGroup row key={month}>
             <label htmlFor={month}>{numToMon(month)}</label>
