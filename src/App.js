@@ -4,6 +4,7 @@ import styled from "styled-components"
 
 import ClientInfo from "./components/forms/ClientInfo"
 import ProjectInfo from "./components/forms/ProjectInfo"
+import UsageData from "./components/forms/UsageData"
 
 import TestComponent from "./components/TestComponent"
 
@@ -104,18 +105,7 @@ class App extends Component {
   }
 
   handleChange(n) {
-    console.log(JSON.stringify(n))
-    console.log(
-      JSON.stringify(Object.assign({}, { ...this.state }, n), null, 2)
-    )
-
     this.setState(() => Object.assign({}, { ...this.state }, n))
-    // const state = {this.state}
-    // this.setState()
-    // const state = { ...this.state }
-    // state[n] = { ...n }
-    // console.log(JSON.stringify(state, null, 2))
-    // this.setState(() => ({ n }))
   }
 
   handleSubmit() {
@@ -182,6 +172,16 @@ class App extends Component {
                 />
               )}
             />
+            <Route
+              path="/usage"
+              exact
+              render={() => (
+                <UsageData
+                  usageData={this.state.usageData}
+                  handleChange={this.handleChange}
+                />
+              )}
+            />
             <Route path="/test" exact render={() => <TestComponent />} />
           </Main>
           <Sidebar>
@@ -192,6 +192,9 @@ class App extends Component {
               </li>
               <li>
                 <StyledNavLink to="/project">Project settings</StyledNavLink>
+              </li>
+              <li>
+                <StyledNavLink to="/usage">Usage data</StyledNavLink>
               </li>
               <li>
                 <StyledNavLink to="/system">System parameters</StyledNavLink>

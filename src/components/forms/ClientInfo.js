@@ -47,7 +47,6 @@ export default class ClientInfo extends Component {
     const { category } = e.target.dataset
     const clientInfo = { ...this.props.clientInfo }
     clientInfo[category][name] = value
-    console.log(JSON.stringify(clientInfo, null, 2))
     this.props.handleChange({ clientInfo })
   }
 
