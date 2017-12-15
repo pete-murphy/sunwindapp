@@ -4,6 +4,7 @@ import FormContainer from "../FormContainer"
 import styled from "styled-components"
 
 import { camelToTitle } from "../../functions/library"
+import Checkbox from "../Checkbox"
 
 const InputGroup = styled.div`
   display: flex;
@@ -21,6 +22,7 @@ export default class ProjectInfo extends Component {
     super()
 
     this.handleChange = this.handleChange.bind(this)
+    this.handleClick = this.handleClick.bind(this)
   }
 
   static propTypes = {
@@ -42,44 +44,55 @@ export default class ProjectInfo extends Component {
     this.props.handleChange(projectInfo)
   }
 
+  handleClick(s) {
+    console.log({ s })
+    // const { name, checked } = e.target
+    // console.log({ name, checked })
+    // const { category } = e.target.dataset
+    // console.log({ category })
+    // const projectInfo = { ...this.props.projectInfo }
+    // console.log(JSON.stringify(projectInfo, null, 2))
+    // category
+    //   ? (projectInfo[category][name] = !projectInfo[category][name])
+    //   : (projectInfo[name] = !projectInfo[name])
+    // console.log(JSON.stringify(projectInfo, null, 2))
+    // this.props.handleChange(projectInfo)
+  }
+
   render() {
     return (
       <FormContainer>
-        <h2>Project Info</h2>
-        {Object.keys(this.props.projectInfo).map(category => {
-          console.log(
-            `Category ${category} is type ${typeof this.props.projectInfo[
-              category
-            ]}`
-          )
-          return typeof this.props.projectInfo[category] !== "object" ? (
-            <InputGroup key={category}>
-              <label htmlFor={category}>{camelToTitle(category)}</label>
-              <input
-                type="text"
-                name={category}
-                onChange={this.handleChange}
-                value={this.props.projectInfo[category]}
-              />
-            </InputGroup>
-          ) : (
-            <Fragment>
-              <h3>{camelToTitle(category)}</h3>
-              {Object.keys(this.props.projectInfo[category]).map(field => (
-                <InputGroup key={field}>
-                  <label htmlFor={field}>{camelToTitle(field)}</label>
-                  <input
-                    type="text"
-                    data-category={category}
-                    name={field}
-                    onChange={this.handleChange}
-                    value={this.props.projectInfo[category][field]}
-                  />
-                </InputGroup>
-              ))}
-            </Fragment>
-          )
-        })}
+        <h2>Project Settings</h2>
+        {Object.keys(this.props.projectInfo).map(
+          category =>
+            typeof this.props.projectInfo[category] !== "object" ? (
+              <InputGroup key={category}>
+                <label htmlFor={category}>{camelToTitle(category)}</label>
+                <input
+                  type="text"
+                  name={category}
+                  onChange={this.handleChange}
+                  value={this.props.projectInfo[category]}
+                />
+              </InputGroup>
+            ) : (
+              <Fragment>
+                <h3>{camelToTitle(category)}</h3>
+                {Object.keys(this.props.projectInfo[category]).map(field => (
+                  <InputGroup key={field}>
+                    <Checkbox
+                      type="text"
+                      data-category={category}
+                      name={field}
+                      label={camelToTitle(field)}
+                      handleClick={this.handleClick}
+                      checked={this.props.projectInfo[category][field]}
+                    />
+                  </InputGroup>
+                ))}
+              </Fragment>
+            )
+        )}
       </FormContainer>
     )
   }

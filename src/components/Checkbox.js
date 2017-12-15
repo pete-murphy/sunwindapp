@@ -33,20 +33,31 @@ const CheckboxSVG = props => (
         <rect x="3" y="3" width="14" height="14" />
       </clipPath>
     </defs>
-    {/* <line x1="10" y1="10" x2="0" y2="20" />
-    <line x1="10" y1="10" x2="0" y2="0" />
-    <line x1="10" y1="10" x2="20" y2="20" />
-    <line x1="10" y1="10" x2="20" y2="0" /> */}
+
     <circle cx="10" cy="10" r="10" />
     <rect x="0" y="0" width="20" height="20" />
   </SVG>
 )
 
 export default class Checkbox extends Component {
+  state = { ...this.props }
+  handleClick = () => {
+    console.log(JSON.stringify(this.props, null, 2))
+    this.setState(({ checked }) => ({ checked: !checked }))
+  }
+
+  componentDidUpdate() {
+    console.log(JSON.stringify(this.state))
+    this.props.handleClick(this.state)
+  }
+
   render() {
     const { onClick, checked, label, disabled } = this.props
     return (
-      <Container disabled={disabled} onClick={!disabled ? onClick : undefined}>
+      <Container
+        disabled={disabled}
+        onClick={!disabled ? this.handleClick : undefined}
+      >
         <CheckboxSVG checked={checked} />
         <label>{label}</label>
       </Container>
