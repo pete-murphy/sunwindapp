@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react"
+import React, { Component } from "react"
 import styled from "styled-components"
 
 const Container = styled.div`
@@ -18,9 +18,7 @@ const SVG = styled.svg`
   margin-right: 0.5rem;
   & circle {
     clip-path: url(#clipPath);
-    ${"" /* stroke-dashoffset: ${props =>
-      props.checked ? "0" : `${Math.ceil(10 * Math.sqrt(2))}`};
-    stroke-dasharray: ${Math.ceil(10 * Math.sqrt(2))}; */} transition: 0.2s all;
+    transition: 0.3s ease all;
     stroke-width: ${props => (props.checked ? "20" : "0")};
     stroke: var(--peachDark);
   }
@@ -42,13 +40,12 @@ const CheckboxSVG = props => (
 export default class Checkbox extends Component {
   state = { ...this.props }
   handleClick = () => {
-    console.log(JSON.stringify(this.props, null, 2))
     this.setState(({ checked }) => ({ checked: !checked }))
     this.props.handleClick(this.state)
   }
 
   render() {
-    const { onClick, checked, label, disabled } = this.props
+    const { checked, label, disabled } = this.props
     return (
       <Container
         disabled={disabled}

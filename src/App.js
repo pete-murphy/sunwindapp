@@ -7,12 +7,7 @@ import ProjectInfo from "./components/forms/ProjectInfo"
 
 import TestComponent from "./components/TestComponent"
 
-import {
-  generateLifetimeAnnualData,
-  getPaybackPeriod
-} from "./functions/calculations"
 import { fetchPVWatts } from "./functions/fetchPVWatts"
-import { sum } from "./functions/library"
 
 const Container = styled.div`
   display: grid;
@@ -55,7 +50,7 @@ class App extends Component {
     this.state = {
       clientInfo: {
         name: {
-          last: "BOod",
+          last: "Bojangles",
           first: ""
         },
         address: {
@@ -107,8 +102,19 @@ class App extends Component {
     }
   }
 
-  handleChange(state) {
-    this.setState(() => state)
+  handleChange(n) {
+    console.log(JSON.stringify(n))
+    console.log(
+      JSON.stringify(Object.assign({}, { ...this.state }, n), null, 2)
+    )
+
+    this.setState(() => Object.assign({}, { ...this.state }, n))
+    // const state = {this.state}
+    // this.setState()
+    // const state = { ...this.state }
+    // state[n] = { ...n }
+    // console.log(JSON.stringify(state, null, 2))
+    // this.setState(() => ({ n }))
   }
 
   handleSubmit() {

@@ -41,16 +41,18 @@ export default class ProjectInfo extends Component {
     category
       ? (projectInfo[category][name] = value)
       : (projectInfo[name] = value)
+
     this.props.handleChange(projectInfo)
   }
 
   handleClick(s) {
-    const { name, checked, category } = s
+    const { name, category } = s
     const projectInfo = { ...this.props.projectInfo }
     category
       ? (projectInfo[category][name] = !projectInfo[category][name])
       : (projectInfo[name] = !projectInfo[name])
-    this.props.handleChange(projectInfo)
+    console.log(JSON.stringify(projectInfo, null, 2))
+    this.props.handleChange({ projectInfo })
   }
 
   render() {
@@ -61,21 +63,31 @@ export default class ProjectInfo extends Component {
           category =>
             typeof this.props.projectInfo[category] !== "object" ? (
               <InputGroup key={category}>
-                <label htmlFor={category}>{camelToTitle(category)}</label>
-                <input
-                  type="text"
-                  name={category}
-                  onChange={this.handleChange}
-                  value={this.props.projectInfo[category]}
-                />
+                {typeof this.props.projectInfo[category] === "boolean" ? (
+                  <Checkbox
+                    name={category}
+                    label={camelToTitle(category)}
+                    handleClick={this.handleClick}
+                    checked={this.props.projectInfo[category]}
+                  />
+                ) : (
+                  <Fragment>
+                    <label htmlFor={category}>{camelToTitle(category)}</label>
+                    <input
+                      type="text"
+                      name={category}
+                      onChange={this.handleChange}
+                      value={this.props.projectInfo[category]}
+                    />
+                  </Fragment>
+                )}
               </InputGroup>
             ) : (
-              <Fragment>
+              <Fragment key={category}>
                 <h3>{camelToTitle(category)}</h3>
                 {Object.keys(this.props.projectInfo[category]).map(field => (
                   <InputGroup key={field}>
                     <Checkbox
-                      type="text"
                       category={category}
                       name={field}
                       label={camelToTitle(field)}
