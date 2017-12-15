@@ -32,7 +32,7 @@ export default class ClientInfo extends Component {
         first: PropTypes.string.isRequired,
         last: PropTypes.string.isRequired,
         uniqueID: PropTypes.string
-      }).isRequired, // Is this "isRequired" redundant if inner properties are required?
+      }).isRequired, // Redundant?
       address: PropTypes.shape({
         line1: PropTypes.string.isRequired,
         line2: PropTypes.string,

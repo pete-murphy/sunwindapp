@@ -35,7 +35,7 @@ export default class UsageData extends Component {
 
   handleChange(e) {
     const { name, value } = e.target
-    const usageData = { ...this.props.usageData }
+    const usageData = [...this.props.usageData]
     usageData[name] = parse(value)
     this.props.handleChange({ usageData })
   }

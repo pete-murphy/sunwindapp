@@ -105,8 +105,8 @@ class App extends Component {
     }
   }
 
-  handleChange(n) {
-    this.setState(() => Object.assign({}, { ...this.state }, n))
+  handleChange(change) {
+    this.setState(() => ({ ...this.state, ...change }))
   }
 
   handleSubmit() {
