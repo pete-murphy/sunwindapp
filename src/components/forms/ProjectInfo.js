@@ -35,6 +35,7 @@ export default class ProjectInfo extends Component {
   }
 
   handleChange(e) {
+    console.log(e)
     const { name, value } = e.target
     const { category } = e.target.dataset
     const projectInfo = { ...this.props.projectInfo }
@@ -42,7 +43,7 @@ export default class ProjectInfo extends Component {
       ? (projectInfo[category][name] = value)
       : (projectInfo[name] = value)
 
-    this.props.handleChange(projectInfo)
+    this.props.handleChange({ projectInfo })
   }
 
   handleClick(s) {

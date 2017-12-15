@@ -51,7 +51,8 @@ class App extends Component {
       clientInfo: {
         name: {
           last: "Bojangles",
-          first: ""
+          first: "",
+          uniqueID: ""
         },
         address: {
           line1: "",

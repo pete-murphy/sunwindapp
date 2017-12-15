@@ -14,6 +14,9 @@ const InputGroup = styled.div`
   & label {
     font-size: 0.75rem;
   }
+  & input {
+    padding: 0.25rem;
+  }
 `
 
 export default class ClientInfo extends Component {
@@ -27,7 +30,8 @@ export default class ClientInfo extends Component {
     clientInfo: PropTypes.shape({
       name: PropTypes.shape({
         first: PropTypes.string.isRequired,
-        last: PropTypes.string.isRequired
+        last: PropTypes.string.isRequired,
+        uniqueID: PropTypes.string
       }).isRequired, // Is this "isRequired" redundant if inner properties are required?
       address: PropTypes.shape({
         line1: PropTypes.string.isRequired,
