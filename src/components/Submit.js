@@ -33,7 +33,7 @@ const Button = styled.button`
 export default class Submit extends Component {
   render() {
     return (
-      <Button disabled={this.props.disabled} onClick={this.props.onClick}>
+      <Button type="submit" disabled={this.props.disabled}>
         <SVG xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
           <rect x="8.08" y="5.64" width="16" height="22" rx="3" ry="3" />
           <rect x="11.58" y="8.45" width="9" height="4.85" rx="2" ry="2" />
