@@ -14,7 +14,7 @@ const SVG = styled.svg`
   height: 1rem;
   stroke-width: 1px;
   stroke: var(--night);
-  fill: transparent;
+  fill: none;
   margin-right: 0.5rem;
   & circle {
     clip-path: url(#clipPath);

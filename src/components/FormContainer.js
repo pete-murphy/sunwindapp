@@ -16,7 +16,8 @@ const Header = styled.h2`
 
 const Grid = styled.div`
   display: grid;
-  width: 50%;
+  min-width: 75%;
+  max-width: 60ch;
   grid-template-columns: ${props =>
     props.cols ? `repeat(${props.cols}, 1fr)` : `none`};
   grid-template-rows: ${props =>

@@ -48,7 +48,10 @@ class App extends Component {
   constructor() {
     super()
 
+    this.addArray = this.addArray.bind(this)
+    this.removeArray = this.removeArray.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
     this.state = {
       clientInfo: {
         name: {
@@ -107,9 +110,11 @@ class App extends Component {
 
   handleChange(change) {
     this.setState(() => ({ ...this.state, ...change }))
+    this.setState(({ hasSubmitted }) => ({ hasSubmitted: false }))
   }
 
   handleSubmit() {
+    this.setState(({ hasSubmitted }) => ({ hasSubmitted: true }))
     const { arrays, defaultSettings } = this.state.system
     arrays.forEach((array, index) => {
       const {
@@ -123,8 +128,8 @@ class App extends Component {
       const systemCapacity = moduleAmount * moduleCapacity / 1000
       fetchPVWatts(systemCapacity, tilt, azimuth, arrayType, losses).then(
         acMonthly => {
-          const arrays = { ...this.system.arrays }
-          arrays[index] = acMonthly
+          const { arrays } = { ...this.state.system }
+          arrays[index].output = acMonthly
           this.setState(({ system }) => ({
             system: {
               ...system,
@@ -134,6 +139,25 @@ class App extends Component {
         }
       )
     })
+  }
+
+  addArray() {
+    const newArray = { ...[...this.state.system.arrays].pop() }
+    this.setState(({ system }) => ({
+      system: {
+        ...system,
+        arrays: [...system.arrays, newArray]
+      }
+    }))
+  }
+
+  removeArray() {
+    this.setState(({ system }) => ({
+      system: {
+        ...system,
+        arrays: [...system.arrays].slice(0, -1)
+      }
+    }))
   }
 
   componentDidMount() {
@@ -190,6 +214,9 @@ class App extends Component {
                 <SystemParams
                   system={this.state.system}
                   handleChange={this.handleChange}
+                  removeArray={this.removeArray}
+                  addArray={this.addArray}
+                  handleSubmit={this.handleSubmit}
                 />
               )}
             />

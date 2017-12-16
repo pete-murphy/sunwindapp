@@ -20,4 +20,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# copy of the original create-react-app README
 READMECopy.md
+
+# images that got converted to inline SVGs
+/src/svg
