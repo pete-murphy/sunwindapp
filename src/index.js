@@ -1,17 +1,24 @@
 import React from "react"
 import ReactDOM from "react-dom"
+import { darken, lighten } from "polished"
+import { injectGlobal } from "styled-components"
+
 import App from "./App"
 import registerServiceWorker from "./registerServiceWorker"
 
-import { injectGlobal } from "styled-components"
+const night = "#333",
+  haus = "#f3f4f4",
+  peach = "#efada0",
+  pear = "#93daab",
+  peachDark = darken(0.2, "#efada0") // #e37059;
 
 injectGlobal`
 :root {
-  --night: #333;
-  --haus: #f3f4f4;
-  --peach: #efada0;
-  --peachDark: #e37059;
-  --pear: #93daab;
+  --night: ${night};
+  --haus: ${haus};
+  --peach: ${peach};
+  --peachDark: ${peachDark};
+  --pear: ${pear};
   --pearDark: #2e854b;
   --sur: #96dbe4;
   --surDark: #24828f;

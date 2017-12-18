@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react"
 import styled from "styled-components"
 
 const SVG = styled.svg`
+  margin-right: 0.5rem;
   width: 2rem;
   height: 2rem;
   align-self: center;
@@ -26,6 +27,7 @@ const Button = styled.button`
   opacity: ${props => (props.disabled ? "0.5" : "1")};
   display: flex;
   align-items: center;
+  font-size: 0.8rem;
 `
 
 export default class Duplicate extends Component {
@@ -37,7 +39,7 @@ export default class Duplicate extends Component {
           <rect x="5.5" y="10.5" width="16" height="16" rx="3" ry="3" />
           <path d="M17.5 18.5h-8M13.5 14.5v8" />
         </SVG>
-        <label>Duplicate Last Array</label>
+        Duplicate Last
       </Button>
     )
   }

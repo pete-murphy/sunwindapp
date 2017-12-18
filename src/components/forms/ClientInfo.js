@@ -5,6 +5,12 @@ import styled from "styled-components"
 
 import { camelToTitle } from "../../functions/library"
 
+const InputRow = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8ch, 1fr));
+  grid-gap: 1rem;
+`
+
 const InputGroup = styled.div`
   display: flex;
   flex-direction: ${props => (props.row ? "row" : "column")};
@@ -56,18 +62,20 @@ export default class ClientInfo extends Component {
         {Object.keys(this.props.clientInfo).map(category => (
           <Fragment key={category}>
             <h3>{camelToTitle(category)}</h3>
-            {Object.keys(this.props.clientInfo[category]).map(field => (
-              <InputGroup key={field}>
-                <label htmlFor={field}>{camelToTitle(field)}</label>
-                <input
-                  type="text"
-                  data-category={category}
-                  name={field}
-                  onChange={this.handleChange}
-                  value={this.props.clientInfo[category][field]}
-                />
-              </InputGroup>
-            ))}
+            <InputRow>
+              {Object.keys(this.props.clientInfo[category]).map(field => (
+                <InputGroup key={field}>
+                  <label htmlFor={field}>{camelToTitle(field)}</label>
+                  <input
+                    type="text"
+                    data-category={category}
+                    name={field}
+                    onChange={this.handleChange}
+                    value={this.props.clientInfo[category][field]}
+                  />
+                </InputGroup>
+              ))}
+            </InputRow>
           </Fragment>
         ))}
       </FormContainer>

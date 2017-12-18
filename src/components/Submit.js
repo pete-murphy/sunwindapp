@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import styled from "styled-components"
 
 const SVG = styled.svg`
+  margin-right: 0.5rem;
   width: 2rem;
   height: 2rem;
   align-self: center;
@@ -28,6 +29,7 @@ const Button = styled.button`
   opacity: ${props => (props.disabled ? "0.5" : "1")};
   display: flex;
   align-items: center;
+  font-size: 0.8rem;
 `
 
 export default class Submit extends Component {
@@ -53,7 +55,7 @@ export default class Submit extends Component {
           <circle cx="11.58" cy="23.83" r="1" />
           <path d="M20.58 21.21v2.62" />{" "}
         </SVG>
-        <label>Calculate System Performance</label>
+        Calculate Performance
       </Button>
     )
   }
