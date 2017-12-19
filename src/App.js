@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React, { Component, Fragment } from "react"
 import { BrowserRouter as Router, Route, NavLink } from "react-router-dom"
 import styled from "styled-components"
 
@@ -10,6 +10,7 @@ import SystemParams from "./components/forms/SystemParams"
 import TestComponent from "./components/TestComponent"
 
 import { fetchPVWatts } from "./functions/fetchPVWatts"
+import { format, sum } from "./functions/library"
 
 const Container = styled.div`
   display: grid;
@@ -217,13 +218,13 @@ class App extends Component {
                   removeArray={this.removeArray}
                   addArray={this.addArray}
                   handleSubmit={this.handleSubmit}
+                  hasSubmitted={this.state.hasSubmitted}
                 />
               )}
             />
             <Route path="/test" exact render={() => <TestComponent />} />
           </Main>
           <Sidebar>
-            <h2>Sidebar</h2>
             <UL>
               <li>
                 <StyledNavLink to="/client">Client information</StyledNavLink>
@@ -241,6 +242,29 @@ class App extends Component {
                 <StyledNavLink to="/test">Test things</StyledNavLink>
               </li>
             </UL>
+            {this.state.system.arrays[0].output.length && (
+              <div style={{ color: "white" }}>
+                <div>
+                  {format(",")(
+                    this.state.system.arrays.reduce(
+                      (acc, curr) =>
+                        acc + curr.output.reduce((acc, curr) => acc + curr, 0),
+                      0
+                    )
+                  )}
+                </div>
+                <div>{format(",")(sum(this.state.usageData))}</div>
+                <div>
+                  {format("%")(
+                    this.state.system.arrays.reduce(
+                      (acc, curr) =>
+                        acc + curr.output.reduce((acc, curr) => acc + curr, 0),
+                      0
+                    ) / sum(this.state.usageData)
+                  )}
+                </div>
+              </div>
+            )}
           </Sidebar>
         </Container>
       </Router>

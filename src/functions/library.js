@@ -38,6 +38,9 @@ export const format = fmt => num => {
   if (fmt === ",") {
     return Math.round(num).toLocaleString("en-US")
   }
+  if (fmt === "%") {
+    return `${Math.round(num * 1000) / 10}%`
+  }
 }
 
 export const numToMon = num =>
@@ -55,3 +58,23 @@ export const numToMon = num =>
     "Nov",
     "Dec"
   ][num]
+
+export const generateLoadData = monthlyAvg => {
+  // These are from NREL SAM, statistical average?
+  const defaultLoadData = [
+    375,
+    331,
+    334,
+    369,
+    479,
+    692,
+    842,
+    772,
+    622,
+    500,
+    325,
+    377
+  ]
+  const multByScale = num => num * monthlyAvg / (sum(defaultLoadData) / 12)
+  return defaultLoadData.map(multByScale).map(Math.round)
+}
