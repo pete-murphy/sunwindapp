@@ -1,7 +1,6 @@
-import React, { Component, Fragment } from "react"
+import React, { Component } from "react"
 import styled from "styled-components"
 
-import Checkbox from "./Checkbox"
 import FormContainer from "./FormContainer"
 
 const InputGroup = styled.div`

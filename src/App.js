@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react"
+import React, { Component } from "react"
 import { BrowserRouter as Router, Route, NavLink } from "react-router-dom"
 import styled from "styled-components"
 
@@ -116,7 +116,8 @@ class App extends Component {
 
   handleSubmit() {
     this.setState(({ hasSubmitted }) => ({ hasSubmitted: true }))
-    const { arrays, defaultSettings } = this.state.system
+    const { arrays } = this.state.system
+    const { moduleType, lat, lon } = this.state.system.defaultSettings
     arrays.forEach((array, index) => {
       const {
         moduleAmount,
@@ -127,18 +128,25 @@ class App extends Component {
         losses
       } = array
       const systemCapacity = moduleAmount * moduleCapacity / 1000
-      fetchPVWatts(systemCapacity, tilt, azimuth, arrayType, losses).then(
-        acMonthly => {
-          const { arrays } = { ...this.state.system }
-          arrays[index].output = acMonthly
-          this.setState(({ system }) => ({
-            system: {
-              ...system,
-              arrays
-            }
-          }))
-        }
-      )
+      fetchPVWatts(
+        systemCapacity,
+        tilt,
+        azimuth,
+        arrayType,
+        losses,
+        lat,
+        lon,
+        moduleType
+      ).then(acMonthly => {
+        const { arrays } = { ...this.state.system }
+        arrays[index].output = acMonthly
+        this.setState(({ system }) => ({
+          system: {
+            ...system,
+            arrays
+          }
+        }))
+      })
     })
   }
 
@@ -257,8 +265,7 @@ class App extends Component {
                 <div>
                   {format("%")(
                     this.state.system.arrays.reduce(
-                      (acc, curr) =>
-                        acc + curr.output.reduce((acc, curr) => acc + curr, 0),
+                      (acc, curr) => acc + sum(curr.output),
                       0
                     ) / sum(this.state.usageData)
                   )}

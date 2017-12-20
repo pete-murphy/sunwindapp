@@ -1,6 +1,6 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import { darken, lighten } from "polished"
+import { darken } from "polished"
 import { injectGlobal } from "styled-components"
 
 import App from "./App"

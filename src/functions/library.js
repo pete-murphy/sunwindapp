@@ -6,7 +6,7 @@ export const camelToTitle = str =>
     .replace(/(\w)(\d)/, "$1 $2")
     .replace(/ {2}/g, " ") // Not sure why this is an issue
 
-export const sum = arr => arr.reduce((a, b) => a + b)
+export const sum = arr => arr.reduce((a, b) => a + b, 0)
 
 export const range = num => [...Array(num).keys()]
 
@@ -24,14 +24,16 @@ export const format = fmt => num => {
       .replace(/\B(?=(\d{3})+(?=\.))/g, ",")}`
   }
   if (fmt === "$") {
-    return Math.round(num).toLocaleString("en-US", {
-      type: "currency",
-      currency: "USD"
-    })
+    return Math.round(num)
+      .toLocaleString("en-US", {
+        style: "currency",
+        currency: "USD"
+      })
+      .slice(0, -3)
   }
   if (fmt === "$.") {
     return num.toLocaleString("en-US", {
-      type: "currency",
+      style: "currency",
       currency: "USD"
     })
   }

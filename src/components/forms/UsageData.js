@@ -1,9 +1,8 @@
-import React, { Component, Fragment } from "react"
+import React, { Component } from "react"
 import PropTypes from "prop-types"
 import styled from "styled-components"
 
 import {
-  camelToTitle,
   numToMon,
   parse,
   format,
@@ -35,18 +34,24 @@ const InputGroup = styled.div`
   }
 `
 
+const convertToDollars = (kWh, rate) => kWh * (rate / 100)
+const convertToKWh = (dollars, rate) => dollars / (rate / 100)
+
 export default class UsageData extends Component {
   constructor() {
     super()
 
+    this.state = {
+      dollarsAsUnits: false,
+      useDefaults: false,
+      monthlyAvg: 0,
+      rate: 18
+    }
+
     this.handleChange = this.handleChange.bind(this)
     this.toggleUseDefaults = this.toggleUseDefaults.bind(this)
+    this.toggleDollars = this.toggleDollars.bind(this)
     this.handleMonthlyAvgChange = this.handleMonthlyAvgChange.bind(this)
-  }
-
-  state = {
-    useDefaults: false,
-    monthlyAvg: 0
   }
 
   static propTypes = {
@@ -56,7 +61,9 @@ export default class UsageData extends Component {
   handleChange(e) {
     const { name, value } = e.target
     const usageData = [...this.props.usageData]
-    usageData[name] = parse(value)
+    usageData[name] = this.state.dollarsAsUnits
+      ? convertToKWh(parse(value), this.state.rate)
+      : parse(value)
     this.props.handleChange({ usageData })
   }
 
@@ -64,11 +71,23 @@ export default class UsageData extends Component {
     this.setState(({ useDefaults }) => ({ useDefaults: !useDefaults }))
   }
 
+  toggleDollars() {
+    this.setState(({ dollarsAsUnits }) => ({ dollarsAsUnits: !dollarsAsUnits }))
+  }
+
   handleMonthlyAvgChange(e) {
     const { value } = e.target
-    this.setState(({ monthlyAvg }) => ({ monthlyAvg: parse(value) }))
-    const usageData = generateLoadData(parse(value))
+    const { rate, dollarsAsUnits } = this.state
+    const monthlyAvg = parse(value)
+    this.setState(() => ({ monthlyAvg }))
+    const usageData = dollarsAsUnits
+      ? generateLoadData(convertToKWh(monthlyAvg, rate))
+      : generateLoadData(monthlyAvg)
     this.props.handleChange({ usageData })
+  }
+
+  componentDidUpdate() {
+    console.log(JSON.stringify(this.state, null, 2))
   }
 
   render() {
@@ -83,6 +102,15 @@ export default class UsageData extends Component {
             />
           </InputGroup>
         </InputRow>
+        <InputRow>
+          <InputGroup>
+            <Checkbox
+              label="Dollars as units?"
+              checked={this.state.dollarsAsUnits}
+              handleClick={this.toggleDollars}
+            />
+          </InputGroup>
+        </InputRow>
         {this.state.useDefaults && (
           <InputRow>
             <InputGroup>
@@ -91,7 +119,26 @@ export default class UsageData extends Component {
                 type="text"
                 name="monthlyAvg"
                 onChange={this.handleMonthlyAvgChange}
-                value={format(",")(this.state.monthlyAvg)}
+                value={
+                  this.state.dollarsAsUnits
+                    ? format("$")(this.state.monthlyAvg)
+                    : format(",")(this.state.monthlyAvg)
+                }
+              />
+            </InputGroup>
+          </InputRow>
+        )}
+        {this.state.dollarsAsUnits && (
+          <InputRow>
+            <InputGroup>
+              <label htmlFor="rate">Utility Rate</label>
+              <input
+                type="text"
+                name="rate"
+                onChange={({ target }) =>
+                  this.setState(({ rate }) => ({ rate: parse(target.value) }))
+                }
+                value={format("$0.00")(this.state.rate)}
               />
             </InputGroup>
           </InputRow>
@@ -100,11 +147,21 @@ export default class UsageData extends Component {
           <InputGroup key={month}>
             <label htmlFor={month}>{numToMon(month)}</label>
             <input
-              disabled={this.state.useDefaults}
+              disabled={this.state.useDefaults || this.state.dollarsAsUnits}
               type="text"
+              key={month}
               name={month}
               onChange={this.handleChange}
-              value={format(",")(this.props.usageData[month])}
+              value={
+                this.state.dollarsAsUnits
+                  ? format("$")(
+                      convertToDollars(
+                        this.props.usageData[month],
+                        this.state.rate
+                      )
+                    )
+                  : format(",")(this.props.usageData[month])
+              }
             />
           </InputGroup>
         ))}

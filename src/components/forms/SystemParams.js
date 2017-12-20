@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react"
+import React, { Component } from "react"
 import { Link } from "react-router-dom"
 import PropTypes from "prop-types"
 import styled from "styled-components"
@@ -8,13 +8,6 @@ import Duplicate from "../Duplicate"
 import Submit from "../Submit"
 import { camelToTitle, format, parse } from "../../functions/library"
 import FormContainer from "../FormContainer"
-
-const Img = styled.img`
-  align-self: center;
-  justify-self: center;
-  width: 2rem;
-  height: 2rem;
-`
 
 const InputRow = styled.div`
   display: grid;
@@ -112,10 +105,6 @@ export default class SystemParams extends Component {
             year production value, please <Link to="/">skip</Link> to the next
             section.
           </p>
-          {this.props.system.arrays.map(array => {
-            console.log(array)
-            console.log(JSON.stringify(Object.keys(array), null, 2))
-          })}
           {this.props.system.arrays.map((array, i) => (
             <InputRow key={i}>
               {Object.keys(array).map(
