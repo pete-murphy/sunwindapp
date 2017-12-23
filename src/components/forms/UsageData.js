@@ -149,7 +149,6 @@ export default class UsageData extends Component {
             <input
               disabled={this.state.useDefaults || this.state.dollarsAsUnits}
               type="text"
-              key={month}
               name={month}
               onChange={this.handleChange}
               value={

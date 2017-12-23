@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React, { Component, Fragment } from "react"
 import { BrowserRouter as Router, Route, NavLink } from "react-router-dom"
 import styled from "styled-components"
 
@@ -6,6 +6,7 @@ import ClientInfo from "./components/forms/ClientInfo"
 import ProjectInfo from "./components/forms/ProjectInfo"
 import UsageData from "./components/forms/UsageData"
 import SystemParams from "./components/forms/SystemParams"
+import Donut from "./components/Donut"
 
 import TestComponent from "./components/TestComponent"
 
@@ -25,6 +26,7 @@ const Container = styled.div`
 const Main = styled.div``
 
 const Sidebar = styled.div`
+  display: flex;
   background-color: var(--night);
 `
 
@@ -34,13 +36,19 @@ const UL = styled.ul`
   padding: 0;
 `
 
-export const StyledNavLink = styled(NavLink)`
+const StyledNavLink = styled(NavLink)`
   text-decoration: none;
   color: var(--peach);
   transition: 0.2s all;
   &.active {
     color: var(--haus);
   }
+`
+
+const Bottom = styled.div`
+  justify-content: center;
+  align-self: flex-end;
+  color: var(--haus);
 `
 
 const defaultTitle = "SunWind App"
@@ -104,7 +112,8 @@ class App extends Component {
       },
       arbitraryOutput: 0,
       systemCost: 0,
-      hasError: true,
+      hasError: false,
+      errorMessage: "",
       hasSubmitted: false
     }
   }
@@ -137,16 +146,20 @@ class App extends Component {
         lat,
         lon,
         moduleType
-      ).then(acMonthly => {
-        const { arrays } = { ...this.state.system }
-        arrays[index].output = acMonthly
-        this.setState(({ system }) => ({
-          system: {
-            ...system,
-            arrays
-          }
-        }))
-      })
+      )
+        .then(acMonthly => {
+          const { arrays } = { ...this.state.system }
+          arrays[index].output = acMonthly
+          this.setState(({ system }) => ({
+            system: {
+              ...system,
+              arrays
+            }
+          }))
+        })
+        .catch(err => {
+          throw new Error(err)
+        })
     })
   }
 
@@ -181,7 +194,22 @@ class App extends Component {
       : (document.title = defaultTitle)
   }
 
+  componentDidCatch(err, info) {
+    this.setState(() => ({
+      hasError: true,
+      errorMessage: `${err}: ${info}`
+    }))
+  }
+
   render() {
+    if (this.state.hasError) {
+      return (
+        <Fragment>
+          <h1>Something went wrong.</h1>
+          <p>{this.state.errorMessage}</p>
+        </Fragment>
+      )
+    }
     return (
       <Router>
         <Container>
@@ -251,7 +279,7 @@ class App extends Component {
               </li>
             </UL>
             {this.state.system.arrays[0].output.length && (
-              <div style={{ color: "white" }}>
+              <Bottom>
                 <div>
                   {format(",")(
                     this.state.system.arrays.reduce(
@@ -270,7 +298,16 @@ class App extends Component {
                     ) / sum(this.state.usageData)
                   )}
                 </div>
-              </div>
+                <Donut
+                  diameter={50}
+                  energyProduced={this.state.system.arrays.reduce(
+                    (acc, curr) =>
+                      acc + curr.output.reduce((acc, curr) => acc + curr, 0),
+                    0
+                  )}
+                  energyUsed={sum(this.state.usageData)}
+                />
+              </Bottom>
             )}
           </Sidebar>
         </Container>

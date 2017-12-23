@@ -46,5 +46,5 @@ export const fetchPVWatts = (
         response.status === 200 ? response.json() : handleError(response)
     )
     .then(data => data.outputs.ac_monthly)
-    .catch(err => console.log(err))
+    .catch(console.log)
 }
